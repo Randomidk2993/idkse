@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xeno | The Best Key-Less Executor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#000;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,0.07) 1px,transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:58px;
+  background:rgba(0,0,0,0.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:9px;
+  font-size:1.1rem;font-weight:700;color:#fff;text-decoration:none;
+}
+.nav-links{
+  display:flex;align-items:center;gap:30px;list-style:none;
+  position:absolute;left:50%;transform:translateX(-50%);
+}
+.nav-links a{
+  color:rgba(255,255,255,0.55);text-decoration:none;
+  font-size:0.875rem;font-weight:400;transition:color 0.18s;
+}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-discord{
+  display:flex;align-items:center;gap:7px;padding:7px 15px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;color:rgba(255,255,255,0.6);font-size:0.81rem;font-weight:500;
+  text-decoration:none;transition:all 0.18s;
+}
+.nav-discord:hover{background:rgba(255,255,255,0.09);color:#fff;border-color:rgba(255,255,255,0.2)}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:58px;position:relative;z-index:1}
+.page.active{display:block}
+
+@keyframes fadein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ══ HOME ══ */
+.home-wrap{
+  display:flex;align-items:flex-start;justify-content:center;
+  gap:28px;padding:44px 40px 32px;flex-wrap:wrap;
+}
+
+/* EXECUTOR WINDOW */
+.xw{
+  width:520px;flex-shrink:0;
+  background:#0b0b0b;
+  border:1px solid rgba(255,255,255,0.11);
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 16px 64px rgba(0,0,0,0.75);
+  animation:fadein 0.55s ease both;
+}
+.xw-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 12px;background:#111;border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.xw-bar-l{display:flex;align-items:center;gap:8px;font-size:0.74rem;color:rgba(255,255,255,0.45)}
+.xw-bar-r{display:flex;gap:5px}
+.xwb{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.18)}
+.xw-tabs{
+  display:flex;background:#0e0e0e;border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 6px;overflow:hidden;
+}
+.xt{
+  padding:6px 10px;font-size:0.69rem;font-weight:500;
+  color:rgba(255,255,255,0.3);cursor:pointer;
+  border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.15s;
+}
+.xt.on{color:rgba(255,255,255,0.82);border-bottom-color:rgba(255,255,255,0.45)}
+.xt:hover{color:rgba(255,255,255,0.6)}
+.xw-body{display:flex;height:248px}
+
+/* code editor */
+.xw-ed{flex:1;overflow:hidden;background:#0b0b0b}
+.codelines{padding:6px 0;font-family:'Courier New',monospace;font-size:0.71rem;line-height:1.65}
+.cline{display:flex;padding:0 10px}
+.cline:hover{background:rgba(255,255,255,0.025)}
+.lno{min-width:30px;color:rgba(255,255,255,0.16);text-align:right;margin-right:14px;user-select:none}
+.ck{color:#c792ea}.cv{color:#ffcb6b}.cf{color:#82aaff}.cs{color:#c3e88d}
+.cn{color:#f78c6c}.co{color:#89ddff}.cc{color:#546e7a;font-style:italic}.cp{color:rgba(255,255,255,0.62)}
+
+/* clients */
+.xw-cl{width:188px;background:#0e0e0e;border-left:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:7px 9px;font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.65);border-bottom:1px solid rgba(255,255,255,0.05)}
+.pc{color:rgba(255,255,255,0.28);cursor:pointer}
+.crow{display:flex;align-items:center;gap:5px;padding:4px 9px;font-size:0.66rem;border-bottom:1px solid rgba(255,255,255,0.035)}
+.cdot{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.cchk{color:#22c55e;font-size:0.6rem}
+.cblk{flex:1;height:9px;background:rgba(255,255,255,0.08);border-radius:2px}
+.cpid{color:rgba(255,255,255,0.22);font-size:0.6rem}
+
+/* scripts */
+.xw-sc{width:188px;background:#0e0e0e;border-left:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-bottom:1px solid rgba(255,255,255,0.035);font-size:0.68rem;color:rgba(255,255,255,0.48)}
+.sopn{font-size:0.6rem;font-weight:600;color:rgba(255,255,255,0.32);background:rgba(255,255,255,0.06);border:none;border-radius:3px;padding:2px 6px;cursor:pointer;transition:all 0.15s}
+.sopn:hover{background:rgba(255,255,255,0.12);color:#fff}
+
+/* toolbar */
+.xw-foot{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#0e0e0e;border-top:1px solid rgba(255,255,255,0.06)}
+.ticon{color:rgba(255,255,255,0.28);font-size:0.82rem;cursor:pointer;transition:color 0.15s}
+.ticon:hover{color:rgba(255,255,255,0.65)}
+.xrun{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.11);border-radius:4px;color:rgba(255,255,255,0.65);font-size:0.7rem;font-weight:600;padding:4px 11px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+.xrun:hover{background:rgba(255,255,255,0.12);color:#fff}
+
+/* PERF CARDS */
+.perf-col{display:flex;flex-direction:column;gap:10px;animation:fadein 0.55s 0.18s ease both}
+.pc2{
+  display:flex;align-items:center;justify-content:space-between;
+  width:270px;background:#111;border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;padding:14px 18px;gap:10px;
+  transition:border-color 0.2s,background 0.2s;
+}
+.pc2:hover{background:#161616;border-color:rgba(255,255,255,0.14)}
+.pc2l{display:flex;align-items:center;gap:11px}
+.pico{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
+.plbl{font-size:0.8rem;font-weight:600;color:#fff;margin-bottom:2px}
+.psub{font-size:0.69rem;color:rgba(255,255,255,0.32)}
+.pval{font-size:0.8rem;font-weight:700;color:#fff;white-space:nowrap;text-align:right}
+
+/* ══ ABOUT ══ */
+.apage{max-width:860px;margin:0 auto;padding:72px 48px}
+.aph{text-align:center;margin-bottom:44px;animation:fadein 0.5s ease both}
+.apt{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px}
+.aps{color:rgba(255,255,255,0.38);font-size:0.92rem}
+.acard{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:34px 38px;animation:fadein 0.5s 0.12s ease both}
+.acard h2{font-size:1.25rem;font-weight:700;margin-bottom:18px}
+.acard p{color:rgba(255,255,255,0.62);font-size:0.9rem;line-height:1.77;margin-bottom:16px}
+.acard p:last-child{margin-bottom:0}
+.acard strong{color:#fff;font-weight:600}
+
+/* ══ HELP ══ */
+.hpage{max-width:860px;margin:0 auto;padding:72px 48px}
+.htitle{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;animation:fadein 0.5s ease both}
+.hsub{color:rgba(255,255,255,0.38);font-size:0.92rem;margin-bottom:44px;animation:fadein 0.5s ease both}
+.hcards{display:flex;flex-direction:column;gap:12px}
+.hcard{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;cursor:pointer;transition:border-color 0.18s,background 0.18s}
+.hcard:hover{background:#161616;border-color:rgba(255,255,255,0.14)}
+.hcq{font-size:0.9rem;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hcchev{transition:transform 0.22s;font-size:0.72rem;opacity:0.38}
+.hcard.open .hcchev{transform:rotate(180deg)}
+.hca{font-size:0.85rem;color:rgba(255,255,255,0.48);line-height:1.7;margin-top:12px;display:none}
+.hcard.open .hca{display:block}
+
+/* ══ EXECUTOR PAGE ══ */
+.epage{max-width:1060px;margin:0 auto;padding:72px 48px;text-align:center}
+.etitle{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;animation:fadein 0.5s ease both}
+.esub{color:rgba(255,255,255,0.38);font-size:0.92rem;margin-bottom:44px;animation:fadein 0.5s ease both}
+.ew{background:#0b0b0b;border:1px solid rgba(255,255,255,0.1);border-radius:9px;overflow:hidden;text-align:left;animation:fadein 0.5s 0.1s ease both}
+.ew-tabs{display:flex;background:#0e0e0e;border-bottom:1px solid rgba(255,255,255,0.06);padding:0 6px}
+textarea#lua-ed{width:100%;height:300px;background:#0b0b0b;border:none;outline:none;resize:none;color:rgba(255,255,255,0.72);font-family:'Courier New',monospace;font-size:0.79rem;line-height:1.65;padding:14px 14px 14px 50px;tab-size:2}
+.ew-foot{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:#0e0e0e;border-top:1px solid rgba(255,255,255,0.06)}
+
+/* ══ DOWNLOAD ══ */
+.dpage{max-width:660px;margin:0 auto;padding:72px 48px;text-align:center}
+.dtitle{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;animation:fadein 0.5s ease both}
+.dsub{color:rgba(255,255,255,0.38);font-size:0.92rem;margin-bottom:44px;animation:fadein 0.5s ease both}
+.dcard{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:44px 38px;animation:fadein 0.5s 0.12s ease both}
+.dver{display:inline-flex;align-items:center;gap:6px;font-size:0.73rem;font-weight:600;letter-spacing:0.05em;color:rgba(255,255,255,0.32);margin-bottom:18px;padding:4px 12px;background:rgba(255,255,255,0.04);border-radius:100px;border:1px solid rgba(255,255,255,0.07)}
+.vdot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.dcard h2{font-size:1.6rem;font-weight:700;margin-bottom:9px}
+.dcard p{color:rgba(255,255,255,0.38);font-size:0.86rem;line-height:1.72;margin-bottom:28px}
+.dbtn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 40px;background:#fff;color:#000;border:none;border-radius:7px;
+  font-size:0.92rem;font-weight:700;font-family:'Inter',sans-serif;
+  cursor:pointer;transition:all 0.18s;text-decoration:none;width:100%;max-width:320px;margin:0 auto;
+}
+.dbtn:hover{background:rgba(255,255,255,0.87);transform:translateY(-1px)}
+.dbtn:active{transform:scale(0.98)}
+.dmeta{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:0.75rem;color:rgba(255,255,255,0.25)}
+.dmeta span{display:flex;align-items:center;gap:4px}
+.dchk{color:#22c55e}
+
+/* ══ CREDITS ══ */
+.crpage{max-width:660px;margin:0 auto;padding:72px 48px;text-align:center}
+.crtitle{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;animation:fadein 0.5s ease both}
+.crsub{color:rgba(255,255,255,0.38);font-size:0.92rem;margin-bottom:44px;animation:fadein 0.5s ease both}
+.crgrid{display:flex;flex-direction:column;gap:10px}
+.crrow{display:flex;align-items:center;justify-content:space-between;background:#111;border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:16px 22px}
+.crname{font-size:0.9rem;font-weight:600}
+.crrole{font-size:0.76rem;color:rgba(255,255,255,0.32)}
+.crbadge{font-size:0.7rem;font-weight:600;padding:3px 10px;border-radius:100px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.42);border:1px solid rgba(255,255,255,0.09)}
+
+/* ══ DONATE ══ */
+.dopage{max-width:660px;margin:0 auto;padding:72px 48px;text-align:center}
+.dotitle{font-size:3.4rem;font-weight:700;letter-spacing:-0.03em;margin-bottom:10px;animation:fadein 0.5s ease both}
+.dosub{color:rgba(255,255,255,0.38);font-size:0.92rem;margin-bottom:44px;animation:fadein 0.5s ease both}
+.docard{background:#111;border:1px solid rgba(255,255,255,0.08);border-radius:13px;padding:44px 38px;animation:fadein 0.5s 0.12s ease both}
+.docard p{color:rgba(255,255,255,0.48);font-size:0.88rem;line-height:1.75;margin-bottom:22px}
+.dobtn{display:inline-flex;align-items:center;gap:7px;padding:12px 32px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:7px;color:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;transition:all 0.18s}
+.dobtn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.18)}
+
+/* TOAST */
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(12px);background:#1a1a1a;border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:11px 20px;font-size:0.81rem;font-weight:500;color:#fff;opacity:0;transition:all 0.3s cubic-bezier(.16,1,.3,1);pointer-events:none;z-index:9999;display:flex;align-items:center;gap:8px;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#000}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:2px}
+
+@media(max-width:860px){
+  nav{padding:0 18px}
+  .nav-links{display:none}
+  .home-wrap{flex-direction:column;align-items:center;padding:24px 16px}
+  .xw{width:100%;max-width:520px}
+  .perf-col{flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .pc2{width:calc(50% - 5px)}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"><span id="ti">↓</span><span id="tm">Starting download...</span></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="sp('home',this);return false">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M18.5 17H6a3.5 3.5 0 1 1 .494-6.967A6.5 6.5 0 1 1 18.5 17Z" fill="rgba(255,255,255,0.92)"/>
+      <circle cx="9" cy="16.5" r="1.3" fill="#000"/>
+      <circle cx="12" cy="16.5" r="1.3" fill="#000"/>
+      <circle cx="15" cy="16.5" r="1.3" fill="#000"/>
+    </svg>
+    Xeno
+  </a>
+  <ul class="nav-links">
+    <li><a href="#" class="active" data-p="home" onclick="sp('home',this);return false">Home</a></li>
+    <li><a href="#" data-p="about" onclick="sp('about',this);return false">About</a></li>
+    <li><a href="#" data-p="help" onclick="sp('help',this);return false">Help</a></li>
+    <li><a href="#" data-p="executor" onclick="sp('executor',this);return false">Executor</a></li>
+    <li><a href="#" data-p="download" onclick="sp('download',this);return false">Download</a></li>
+    <li><a href="#" data-p="credits" onclick="sp('credits',this);return false">Credits</a></li>
+    <li><a href="#" data-p="donate" onclick="sp('donate',this);return false">Donate</a></li>
+  </ul>
+  <a href="#" class="nav-discord">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    Join Discord
+  </a>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div id="page-home" class="page active">
+  <div class="home-wrap">
+
+    <!-- Executor window -->
+    <div class="xw">
+      <div class="xw-bar">
+        <div class="xw-bar-l">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,0.65)"><path d="M18.5 17H6a3.5 3.5 0 1 1 .494-6.967A6.5 6.5 0 1 1 18.5 17Z"/></svg>
+          <span>Xeno v1.2.0</span>
+          <span style="color:rgba(255,255,255,0.24);margin-left:2px">https://xeno.onl</span>
+        </div>
+        <div class="xw-bar-r"><div class="xwb"></div><div class="xwb"></div><div class="xwb"></div></div>
+      </div>
+      <div class="xw-tabs">
+        <div class="xt on">Infinite Yield</div>
+        <div class="xt">Sirius</div>
+        <div class="xt">Visualizer</div>
+        <div class="xt">UNC Checker</div>
+        <div class="xt">WebSocket Test</div>
+        <div class="xt">Game Enhancer</div>
+        <div class="xt">Test</div>
+        <div class="xt">Tab 8</div>
+        <div class="xt">Tab 9</div>
+        <div class="xt" style="color:rgba(255,255,255,0.18)">+</div>
+      </div>
+      <div class="xw-body">
+        <!-- editor -->
+        <div class="xw-ed">
+          <div class="codelines">
+            <div class="cline"><span class="lno">6892</span><span class="ck">local</span><span class="cp"> BG = </span><span class="cf">Instance</span><span class="co">.</span><span class="cf">new</span><span class="cp">(</span><span class="cs">'BodyGyro'</span><span class="cp">)</span></div>
+            <div class="cline"><span class="lno">6893</span><span class="ck">local</span><span class="cp"> BV = </span><span class="cf">Instance</span><span class="co">.</span><span class="cf">new</span><span class="cp">(</span><span class="cs">'BodyVelocity'</span><span class="cp">)</span></div>
+            <div class="cline"><span class="lno">6894</span><span class="cv">BG</span><span class="co">.</span><span class="cp">P = </span><span class="cn">9e4</span></div>
+            <div class="cline"><span class="lno">6895</span><span class="cv">BG</span><span class="co">.</span><span class="cp">Parent = T</span></div>
+            <div class="cline"><span class="lno">6896</span><span class="cv">BV</span><span class="co">.</span><span class="cp">Parent = T</span></div>
+            <div class="cline"><span class="lno">6897</span><span class="cv">BG</span><span class="co">.</span><span class="cp">maxTorque = </span><span class="cf">Vector3</span><span class="co">.</span><span class="cf">new</span><span class="cp">(</span><span class="cn">9e9</span><span class="cp">, </span><span class="cn">9e9</span><span class="cp">, </span><span class="cn">9e9</span><span class="cp">)</span></div>
+            <div class="cline"><span class="lno">6898</span><span class="cv">BG</span><span class="co">.</span><span class="cp">cframe = T.CFrame</span></div>
+            <div class="cline" style="background:rgba(255,255,255,0.035)"><span class="lno">6899</span><span class="cv">BV</span><span class="co">.</span><span class="cp">velocity = </span><span class="cf">Vector3</span><span class="co">.</span><span class="cf">new</span><span class="cp">(</span><span class="cn">0</span><span class="cp">, </span><span class="cn">0</span><span class="cp">, </span><span class="cn">0</span><span class="cp">)</span></div>
+            <div class="cline"><span class="lno">6900</span><span class="cv">BV</span><span class="co">.</span><span class="cp">maxForce = </span><span class="cf">Vector3</span><span class="co">.</span><span class="cf">new</span><span class="cp">(</span><span class="cn">9e9</span><span class="cp">, </span><span class="cn">9e9</span><span class="cp">, </span><span class="cn">9e9</span><span class="cp">)</span></div>
+            <div class="cline"><span class="lno">6901</span><span class="cf">task</span><span class="co">.</span><span class="cf">spawn</span><span class="cp">(</span><span class="ck">function</span><span class="cp">()&thinsp;</span></div>
+            <div class="cline"><span class="lno">6902</span><span class="cp">&nbsp;&nbsp;</span><span class="ck">repeat</span><span class="cp"> </span><span class="cf">wait</span><span class="cp">()</span></div>
+            <div class="cline"><span class="lno">6903</span><span class="cp">&nbsp;&nbsp;</span><span class="ck">if not</span><span class="cp"> vfly </span><span class="ck">and</span><span class="cp"> Players.LocalPlayer.Character:FindFirstChildOfC</span></div>
+            <div class="cline"><span class="lno">6904</span><span class="cp">&nbsp;&nbsp;&nbsp;&nbsp;Players.LocalPlayer.Character:FindFirstChildOfClass(</span><span class="cs">'Humanoi</span></div>
+            <div class="cline"><span class="lno">6905</span><span class="cp">&nbsp;&nbsp;</span><span class="ck">end</span></div>
+            <div class="cline"><span class="lno">6906</span><span class="ck">if</span><span class="cp"> CONTROL.L + CONTROL.R ~= </span><span class="cn">0</span><span class="cp"> </span><span class="ck">or</span><span class="cp"> CONTROL.F + CONTROL.B ~= </span><span class="cn">0</span></div>
+          </div>
+        </div>
+
+        <!-- clients -->
+        <div class="xw-cl">
+          <div class="ph">Active Clients (7)<span class="pc">✕</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:68px"></span><span class="cpid">PID: 13704</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:56px"></span><span class="cpid">PID: 18016</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:62px"></span><span class="cpid">PID: 6732</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:50px"></span><span class="cpid">PID: 7368</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:66px"></span><span class="cpid">PID: 17500</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:58px"></span><span class="cpid">PID: 7004</span></div>
+          <div class="crow"><span class="cdot"></span><span class="cchk">✓</span><span class="cblk" style="width:48px"></span><span class="cpid">PID: 9112</span></div>
+        </div>
+
+        <!-- scripts -->
+        <div class="xw-sc">
+          <div class="ph" style="gap:6px">Scripts<span style="font-size:0.62rem;color:rgba(255,255,255,0.26);cursor:pointer;margin-right:auto;margin-left:4px">Open Folder</span><span class="pc">✕</span></div>
+          <div class="srow"><span>Decompiler.lua</span><button class="sopn">Open</button></div>
+          <div class="srow"><span>Dex Explorer.txt</span><button class="sopn">Open</button></div>
+          <div class="srow"><span>Infinite Yield.lua</span><button class="sopn">Open</button></div>
+          <div class="srow"><span>Sirius.lua</span><button class="sopn">Open</button></div>
+          <div class="srow"><span>UNCCheck.lua</span><button class="sopn">Open</button></div>
+        </div>
+      </div>
+
+      <div class="xw-foot">
+        <div style="display:flex;gap:9px">
+          <span class="ticon">⚙</span><span class="ticon">📁</span><span class="ticon">💾</span><span class="ticon">✏</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span class="ticon">🔗</span><span class="ticon">⧉</span><span class="ticon">⊞</span>
+        </div>
+        <button class="xrun">▶ Execute</button>
+      </div>
+    </div>
+
+    <!-- Performance cards -->
+    <div class="perf-col">
+      <div class="pc2">
+        <div class="pc2l">
+          <div class="pico">⚡</div>
+          <div><div class="plbl">Execution Speed</div><div class="psub">Instant script execution</div></div>
+        </div>
+        <div class="pval">Lightning Fast</div>
+      </div>
+      <div class="pc2">
+        <div class="pc2l">
+          <div class="pico">◎</div>
+          <div><div class="plbl">Performance</div><div class="psub">Good performance</div></div>
+        </div>
+        <div class="pval">99.9%</div>
+      </div>
+      <div class="pc2">
+        <div class="pc2l">
+          <div class="pico">⏱</div>
+          <div><div class="plbl">Response Time</div><div class="psub">Ultra-low latency</div></div>
+        </div>
+        <div class="pval">Fast</div>
+      </div>
+      <div class="pc2">
+        <div class="pc2l">
+          <div class="pico">✓</div>
+          <div><div class="plbl">Reliability</div><div class="psub">Stable execution</div></div>
+        </div>
+        <div class="pval">100%</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div id="page-about" class="page">
+  <div class="apage">
+    <div class="aph"><h1 class="apt">About Xeno</h1><p class="aps">Explore more about Xeno</p></div>
+    <div class="acard">
+      <h2>About Xeno</h2>
+      <p>Xeno is an external Roblox executor made for utility and gameplay improvements (not for cheats) to optimize your experience, which is trusted by thousands of users. Xeno is built with performance in mind, it offers seamless <strong>Script Execution</strong> and reliable memory management for the best experience.</p>
+      <p>What sets Xeno apart is its commitment to being completely a <strong>Free And Keyless Executor</strong>, making it accessible to everyone. The interface is designed to be simple, whether you're new to using these tools or an experienced user.</p>
+      <p>With features like multi-attach support, <strong>Online Script Hub</strong> integration, and <strong>Online Script Execution</strong>, Xeno provides everything you need as a utility tool for Roblox. Regular updates ensure compatibility with the latest Roblox versions.</p>
+      <p>Join our <strong>Discord</strong> to be part of Xeno's journey and get the latest updates and changelogs.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HELP ═══════════ -->
+<div id="page-help" class="page">
+  <div class="hpage">
+    <h1 class="htitle">Help &amp; FAQ</h1>
+    <p class="hsub">Common questions about Xeno</p>
+    <div class="hcards">
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">How do I attach Xeno to Roblox?<span class="hcchev">▼</span></div>
+        <div class="hca">Open Xeno and launch Roblox. Once you're in a game, click Attach inside Xeno. The status indicator turns green when attached successfully.</div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">Is Xeno really free and keyless?<span class="hcchev">▼</span></div>
+        <div class="hca">Yes. Xeno is completely free with no key system, no paywalls, and no subscriptions. It will always remain free.</div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">My antivirus flagged Xeno — is it safe?<span class="hcchev">▼</span></div>
+        <div class="hca">Executors are often flagged by antivirus software due to memory manipulation. Xeno contains no malware. Add an exception in your antivirus and only download from the official site.</div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">Xeno isn't attaching after a Roblox update — what do I do?<span class="hcchev">▼</span></div>
+        <div class="hca">After a Roblox update, executors need to update too. Check Discord for the latest patch. We typically push updates within hours.</div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">How do I use the Script Hub?<span class="hcchev">▼</span></div>
+        <div class="hca">Click the Script Hub tab inside Xeno. Browse or search for scripts, then click Execute to run them in-game. No copy-pasting needed.</div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('open')">
+        <div class="hcq">Can I attach to multiple Roblox clients at once?<span class="hcchev">▼</span></div>
+        <div class="hca">Yes! Xeno supports multi-client attachment. Open the Active Clients panel to see all running Roblox instances and manage them individually.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ EXECUTOR ═══════════ -->
+<div id="page-executor" class="page">
+  <div class="epage">
+    <h1 class="etitle">Online Executor</h1>
+    <p class="esub">Test and run Lua scripts in the browser</p>
+    <div class="ew">
+      <div class="ew-tabs">
+        <div class="xt on">Script 1</div>
+        <div class="xt">Script 2</div>
+        <div class="xt" style="color:rgba(255,255,255,0.2)">+</div>
+      </div>
+      <div style="position:relative">
+        <textarea id="lua-ed" spellcheck="false" placeholder="-- Enter your Lua script here&#10;print('Hello from Xeno!')"></textarea>
+        <div id="lnums" style="position:absolute;top:0;left:0;bottom:0;width:42px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;align-items:flex-end;padding:14px 7px 14px 0;font-family:'Courier New',monospace;font-size:0.79rem;line-height:1.65;color:rgba(255,255,255,0.15);pointer-events:none;user-select:none">1</div>
+      </div>
+      <div class="ew-foot">
+        <span id="estatus" style="font-size:0.72rem;color:rgba(255,255,255,0.22);font-family:'Courier New',monospace">Ready</span>
+        <div style="display:flex;gap:7px">
+          <button onclick="clearEd()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:4px;color:rgba(255,255,255,0.38);font-size:0.73rem;font-weight:600;padding:5px 13px;cursor:pointer;font-family:'Inter',sans-serif">Clear</button>
+          <button onclick="runEd()" style="background:#fff;border:none;border-radius:4px;color:#000;font-size:0.73rem;font-weight:700;padding:5px 16px;cursor:pointer;font-family:'Inter',sans-serif">▶ Execute</button>
+        </div>
+      </div>
+    </div>
+    <p style="text-align:center;color:rgba(255,255,255,0.18);font-size:0.75rem;margin-top:18px">Browser demo only. Download Xeno for full Roblox injection support.</p>
+  </div>
+</div>
+
+<!-- ═══════════ DOWNLOAD ═══════════ -->
+<div id="page-download" class="page">
+  <div class="dpage">
+    <h1 class="dtitle">Download Xeno</h1>
+    <p class="dsub">Get the latest version for free</p>
+    <div class="dcard">
+      <div class="dver"><span class="vdot"></span>v1.2.0 — Latest Stable</div>
+      <h2>Xeno for Windows</h2>
+      <p>Free, keyless, and ready to use.<br>Compatible with Windows 10 and Windows 11.</p>
+      <button class="dbtn" onclick="handleDownload()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download for Windows
+      </button>
+      <div class="dmeta">
+        <span><span class="dchk">✓</span>Windows 10 / 11</span>
+        <span><span class="dchk">✓</span>No Key Required</span>
+        <span><span class="dchk">✓</span>Always Free</span>
+        <span><span class="dchk">✓</span>Auto-Updates</span>
+      </div>
+    </div>
+    <p style="margin-top:20px;font-size:0.75rem;color:rgba(255,255,255,0.18)">Having issues? Join our Discord for support.</p>
+  </div>
+</div>
+
+<!-- ═══════════ CREDITS ═══════════ -->
+<div id="page-credits" class="page">
+  <div class="crpage">
+    <h1 class="crtitle">Credits</h1>
+    <p class="crsub">The people behind Xeno</p>
+    <div class="crgrid">
+      <div class="crrow"><div><div class="crname">Lead Developer</div><div class="crrole">Core engine &amp; architecture</div></div><span class="crbadge">Developer</span></div>
+      <div class="crrow"><div><div class="crname">UI / UX Designer</div><div class="crrole">Interface &amp; design systems</div></div><span class="crbadge">Designer</span></div>
+      <div class="crrow"><div><div class="crname">Script Hub Curator</div><div class="crrole">Scripts &amp; library management</div></div><span class="crbadge">Contributor</span></div>
+      <div class="crrow"><div><div class="crname">Community &amp; Support</div><div class="crrole">Discord moderation &amp; support</div></div><span class="crbadge">Moderator</span></div>
+      <div class="crrow"><div><div class="crname">The Xeno Community</div><div class="crrole">50,000+ users &amp; testers</div></div><span class="crbadge">Community</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ DONATE ═══════════ -->
+<div id="page-donate" class="page">
+  <div class="dopage">
+    <h1 class="dotitle">Support Xeno</h1>
+    <p class="dosub">Help keep Xeno free for everyone</p>
+    <div class="docard">
+      <p>Xeno is and always will be completely free. If you'd like to support development and keep the servers running, donations are deeply appreciated but never required.</p>
+      <p>Every contribution goes directly towards hosting, development time, and keeping Xeno updated with every Roblox patch.</p>
+      <a href="#" class="dobtn">♥&nbsp; Donate to Xeno</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function sp(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+// Editor line numbers
+const ed = document.getElementById('lua-ed');
+const ln = document.getElementById('lnums');
+if (ed && ln) {
+  function updLn() {
+    const n = ed.value.split('\n').length;
+    ln.innerHTML = Array.from({length:n},(_,i)=>i+1).join('<br>');
+  }
+  ed.addEventListener('input', updLn);
+  ed.addEventListener('keydown', e => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = ed.selectionStart;
+      ed.value = ed.value.substring(0,s) + '  ' + ed.value.substring(ed.selectionEnd);
+      ed.selectionStart = ed.selectionEnd = s + 2;
+      updLn();
+    }
+  });
+}
+function clearEd() {
+  if (ed) { ed.value = ''; if(ln){ln.innerHTML='1';} document.getElementById('estatus').textContent='Cleared'; }
+}
+function runEd() {
+  const st = document.getElementById('estatus');
+  if (!ed || !ed.value.trim()) { st.textContent = 'No script'; return; }
+  st.textContent = 'Executing...';
+  setTimeout(() => st.textContent = 'Executed ✓', 600);
+}
+
+// Download
+async function handleDownload() {
+  const toast = document.getElementById('toast');
+  const msg = document.getElementById('tm');
+
+  // ─── SET THESE ───
+  const GITHUB_USER = 'YOUR_USERNAME';
+  const GITHUB_REPO = 'YOUR_REPO';
+  const FILE_NAME   = 'downloadfile.exe';
+  // ─────────────────
+
+  const url = `https://github.com/${GITHUB_USER}/${GITHUB_REPO}/raw/main/download/${FILE_NAME}`;
+  msg.textContent = 'Checking for latest release...';
+  toast.classList.add('show');
+
+  try {
+    const r = await fetch(url, { method: 'HEAD' });
+    if (r.ok) {
+      msg.textContent = 'Download starting!';
+      setTimeout(() => {
+        const a = document.createElement('a');
+        a.href = url; a.download = FILE_NAME;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      }, 300);
+    } else {
+      msg.textContent = 'No release found — check back soon.';
+    }
+  } catch {
+    msg.textContent = 'Download starting!';
+    const a = document.createElement('a');
+    a.href = url; a.download = FILE_NAME;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
