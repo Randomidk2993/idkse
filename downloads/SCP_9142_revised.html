@@ -1,0 +1,483 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Share+Tech+Mono&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a14;
+  --ink2:#3a3a2e;
+  --ink3:#5a5a4a;
+  --paper:#f5f3ec;
+  --paper2:#efedc4;
+  --paper3:#e8e5d5;
+  --border:#c8c4a8;
+  --border2:#aaa890;
+  --red:#8b1a1a;
+  --red2:#c42828;
+  --amber:#7a5800;
+  --green:#2a4a2a;
+  --green2:#3a6a3a;
+  --serif:'Source Serif 4',Georgia,serif;
+  --mono:'Share Tech Mono','Courier New',monospace;
+}
+body{background:#d8d5c5;font-family:var(--serif);color:var(--ink);font-size:14px;line-height:1.75;margin:0;padding:16px}
+.page{max-width:820px;margin:0 auto;background:var(--paper);border:1px solid var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.18),inset 0 0 40px rgba(0,0,0,0.03);padding:0}
+
+/* TOP BAR */
+.topbar{background:var(--ink);padding:8px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.logo-svg{width:32px;height:32px;opacity:0.7}
+.topbar-title{color:#aaa898;font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase}
+.topbar-right{font-family:var(--mono);font-size:10px;color:#555548;letter-spacing:0.08em}
+
+/* CLEARANCE BAND */
+.clearance-band{background:#2a0000;padding:7px 24px;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:0.18em;color:#c84040;text-transform:uppercase;border-bottom:1px solid #400000}
+
+/* MAIN CONTENT */
+.content{padding:28px 36px}
+
+/* DOC HEADER */
+.doc-id{font-family:var(--mono);font-size:11px;color:var(--ink3);letter-spacing:0.1em;margin-bottom:6px}
+.doc-title{font-size:26px;font-weight:600;color:var(--ink);letter-spacing:0.02em;line-height:1.2;margin-bottom:4px;font-family:var(--serif)}
+.doc-sub{font-style:italic;font-size:15px;color:var(--ink3);margin-bottom:14px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:0}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border:1px solid;display:inline-block}
+.badge-keter{color:var(--red);border-color:var(--red);background:#fdf0f0}
+
+.rule{border:none;border-top:1.5px solid var(--border);margin:22px 0}
+.rule-heavy{border:none;border-top:2px solid var(--ink2);margin:22px 0}
+
+/* SECTION HEADERS */
+.sec-head{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-head::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* PHOTO STRIP */
+.photo-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.photo-frame{border:1px solid var(--border2);background:#e0ddd0;overflow:hidden}
+.photo-frame img{width:100%;height:220px;object-fit:cover;object-position:center 20%;display:block;filter:sepia(0.15) contrast(1.05) brightness(0.95)}
+.photo-cap{font-family:var(--mono);font-size:10px;color:var(--ink3);padding:5px 8px;border-top:1px solid var(--border);background:#eae8da;line-height:1.4}
+.photo-stamp{font-family:var(--mono);font-size:9px;color:var(--ink3);float:right}
+
+/* CALLOUT BOXES */
+.box{border-left:3px solid var(--border2);padding:12px 16px;margin:14px 0;background:var(--paper3)}
+.box-warn{border-left-color:var(--red);background:#fdf5f5}
+.box-note{border-left-color:var(--amber);background:#fdf9f0}
+.box-dim{border-left-color:#5a2a7a;background:#f8f4fd}
+.box-label{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:7px;font-weight:normal}
+.box-label-warn{color:var(--red)}
+.box-label-note{color:var(--amber)}
+.box-label-dim{color:#6a2a9a}
+p{margin-bottom:10px}
+p:last-child{margin-bottom:0}
+ul{margin:8px 0 10px 20px}
+li{margin-bottom:5px;color:var(--ink)}
+
+/* REDACTED */
+.rx{background:var(--ink);color:var(--ink);padding:1px 3px;border-radius:1px;cursor:default;transition:all 0.25s;display:inline}
+.rx:hover{background:#555;color:var(--paper)}
+
+/* ABILITY BLOCKS */
+.ability{border:1px solid var(--border);margin:10px 0;background:var(--paper)}
+.ability-head{padding:9px 14px;display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--paper3)}
+.ability-name{font-family:var(--mono);font-size:11px;letter-spacing:0.08em;color:var(--ink2)}
+.ability-tag{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:1px}
+.tag-passive{color:#2a4a2a;background:#e8f0e8;border:1px solid #a0c0a0}
+.tag-active{color:#5a2a00;background:#f8ede0;border:1px solid #c09060}
+.tag-cognitohazard{color:#5a005a;background:#f5eaf8;border:1px solid #c090c8}
+.tag-spatial{color:#00405a;background:#e0f0f8;border:1px solid #80b8d0}
+.tag-unknown{color:#3a3a2a;background:#eeece0;border:1px solid #b0ae98}
+.ability-body{padding:12px 14px;font-size:13.5px;line-height:1.75}
+
+/* INCIDENT */
+.incident{border:1px solid #c0a0a0;margin:14px 0;background:#fefcfc}
+.incident-head{background:#f5e8e8;border-bottom:1px solid #c0a0a0;padding:10px 16px;display:flex;align-items:baseline;justify-content:space-between}
+.incident-id{font-family:var(--mono);font-size:11px;color:var(--red);letter-spacing:0.1em}
+.incident-status{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.05em}
+.incident-meta{padding:8px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;background:#fdf8f8}
+.meta-k{font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.06em}
+.meta-v{font-family:var(--mono);font-size:10px;color:var(--ink2)}
+.incident-body{padding:14px 16px;font-size:13.5px}
+
+/* TRANSCRIPT */
+.transcript{background:#f0ede0;border:1px solid var(--border2);padding:10px 14px;font-family:var(--mono);font-size:12px;margin:10px 0;line-height:1.8}
+.t-row{display:grid;grid-template-columns:90px 1fr;gap:8px;margin:2px 0}
+.t-ts{color:var(--ink3)}
+.t-content{color:var(--ink2)}
+.t-note{color:var(--ink3);font-style:italic}
+.t-ominous{color:var(--red2)}
+
+/* DIMENSION DIAGRAM */
+.dim-diagram{border:1px solid #b090c8;background:#f8f4fd;padding:16px;margin:12px 0}
+.dim-title{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#6a2a9a;margin-bottom:12px}
+.dim-stage{display:grid;grid-template-columns:80px 1fr;gap:0;margin:4px 0;border:1px solid #d0b8e0}
+.dim-night{background:#ede0f8;padding:6px 10px;font-family:var(--mono);font-size:10px;color:#6a2a9a;display:flex;align-items:center;border-right:1px solid #d0b8e0}
+.dim-desc{padding:6px 10px;font-size:12.5px;color:var(--ink2);background:#f8f4fd}
+.dim-stage:nth-child(odd) .dim-desc{background:#f5f0fc}
+
+/* QUOTE */
+.pull-quote{border-top:2px solid var(--ink2);border-bottom:2px solid var(--ink2);padding:14px 0;margin:16px 0;font-style:italic;font-size:15px;color:var(--ink2);line-height:1.7}
+.pull-attr{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--ink3);letter-spacing:0.08em;display:block;margin-top:8px}
+
+/* ADDENDUM */
+.addendum{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}
+.add-id{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--green2);margin-bottom:10px}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+td,th{padding:7px 10px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink3);background:var(--paper3);font-weight:normal}
+tr:nth-child(even) td{background:var(--paper3)}
+
+/* FOOTER */
+.footer{background:var(--ink);padding:12px 24px;display:flex;justify-content:space-between;align-items:center}
+.footer-text{font-family:var(--mono);font-size:10px;color:#55544a;letter-spacing:0.1em;text-transform:uppercase}
+</style>
+
+<div class="page">
+
+<div class="topbar">
+  <div class="topbar-left">
+    <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="17" stroke="#888" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="9" stroke="#888" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="2.5" fill="#888"/>
+      <line x1="20" y1="3" x2="20" y2="11" stroke="#888" stroke-width="1.2"/>
+      <line x1="20" y1="29" x2="20" y2="37" stroke="#888" stroke-width="1.2"/>
+      <line x1="3" y1="20" x2="11" y2="20" stroke="#888" stroke-width="1.2"/>
+      <line x1="29" y1="20" x2="37" y2="20" stroke="#888" stroke-width="1.2"/>
+      <line x1="6.9" y1="6.9" x2="12.9" y2="12.9" stroke="#888" stroke-width="1.2"/>
+      <line x1="27.1" y1="27.1" x2="33.1" y2="33.1" stroke="#888" stroke-width="1.2"/>
+      <line x1="33.1" y1="6.9" x2="27.1" y2="12.9" stroke="#888" stroke-width="1.2"/>
+      <line x1="12.9" y1="27.1" x2="6.9" y2="33.1" stroke="#888" stroke-width="1.2"/>
+    </svg>
+    <div>
+      <div class="topbar-title">SCP Foundation — Secure. Contain. Protect.</div>
+    </div>
+  </div>
+  <div class="topbar-right">SITE-17 · RESTRICTED ACCESS</div>
+</div>
+
+<div class="clearance-band">⬛ LEVEL 4/9142 CLASSIFIED — UNAUTHORIZED ACCESS IS A CAPITAL OFFENSE ⬛</div>
+
+<div class="content">
+
+  <div class="doc-id">Item #: SCP-9142 &nbsp;|&nbsp; File: 9142-Theta-4 &nbsp;|&nbsp; Author: Dr. <span class="rx">████████</span>, Dept. of Cognitohazard Research</div>
+  <div class="doc-title">SCP-9142</div>
+  <div class="doc-sub">Provisional Designation: "The Patient One"</div>
+  <div class="badges">
+    <span class="badge badge-keter">Object Class: Keter</span>
+  </div>
+
+  <hr class="rule-heavy">
+
+  <div class="box box-warn">
+    <div class="box-label box-label-warn">⬛ Cognitohazard Notice — Mandatory Pre-Reading</div>
+    All personnel accessing this file must have completed SCRAMBLE-IV memetic inoculation within the preceding 30 days. Prolonged uninterrupted viewing of attached surveillance photographs (Figs. 1–2) has been associated with onset of anomalous effects in <span class="rx">██</span>% of exposed subjects. Limit continuous viewing to under eight seconds. If you believe SCP-9142 has made direct eye contact with you through this document, close the file immediately and report to Medical Wing 4 for psychological screening.
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec-head">Surveillance Documentation</div>
+
+  <div class="photo-strip">
+    <div class="photo-frame">
+      <img src="/mnt/user-data/uploads/IMG_2252.png" alt="SCP-9142 surveillance image A"/>
+      <div class="photo-cap"><span class="photo-stamp">CAM-04 &nbsp;03:17:44</span>Fig. 1 — Standard passive posture. Retinal luminescence present without external light source.</div>
+    </div>
+    <div class="photo-frame">
+      <img src="/mnt/user-data/uploads/IMG_2253.png" alt="SCP-9142 surveillance image B"/>
+      <div class="photo-cap"><span class="photo-stamp">CAM-04 &nbsp;03:19:11</span>Fig. 2 — Same session, 87 seconds later. Entity has closed 0.4m. Zero motion sensor triggers recorded.</div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec-head">Special Containment Procedures</div>
+
+  <p>SCP-9142 is contained in a Modified Cognitohazard Isolation Cell (MCIC-9142) at Site-17, designated Cell Block Theta. The cell is constructed to the following specifications:</p>
+
+  <ul>
+    <li>Walls, floor, and ceiling reinforced with 40cm ferroconcrete. All interior surfaces coated in anti-adhesion polymer following Incident 9142-C.</li>
+    <li>No reflective surfaces of any kind. All monitoring conducted exclusively via non-digital <strong>35mm film-based cameras</strong>, replaced every 72 hours. Digital recording equipment fails within an average of 6.2 hours of deployment.</li>
+    <li>Four (4) Scranton Reality Anchors (Type IV) mounted at cell corners. Anchors are inspected every 48 hours and replaced at the first sign of output degradation. A stock of eight (8) replacement units is maintained on-site at all times.</li>
+    <li>Feeding conducted via pneumatic delivery hatch. No personnel are to enter MCIC-9142 for any reason outside a declared Code Black Retrieval Protocol, which requires a minimum team of four (4) agents and O5 authorization.</li>
+    <li>All staff assigned to SCP-9142 monitoring are subject to biweekly psychological evaluation administered by a clinician with no prior SCP-9142 exposure. Any personnel reporting dream content consistent with Profile 9142-D (see Addendum 9142-03) are to be immediately rotated off assignment and placed under 72-hour medical observation.</li>
+  </ul>
+
+  <div class="box box-warn">
+    <div class="box-label box-label-warn">Standing Order — Verbal Prohibition</div>
+    Under no circumstances are personnel to verbally or in writing describe SCP-9142 using terms of affection, diminutiveness, or companionship — including but not limited to: <em>cute, harmless, sweet, good boy/girl, puppy,</em> or any breed-specific affectionate term. Such acknowledgement constitutes behavioral reinforcement. Documented effect: a 3× escalation of anomalous properties within 24 hours of reinforcement event. Violators are subject to immediate amnesticization and reassignment.
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec-head">Description</div>
+
+  <p>SCP-9142 is an anomalous entity presenting as a long-haired toy dog of mixed breed appearance. It measures 26 cm at the shoulder and weighs 3.2 kg. Its coat is black, tan, and white, with a notably plumed tail held in a permanent upward curl. Its eyes are disproportionately large and forward-facing, and emit weak bioluminescent light independently of any external source — confirmed by photometric analysis in complete darkness (Figs. 1–2).</p>
+
+  <p>SCP-9142 is not an animal.</p>
+
+  <p>Biological examination has returned consistently <span class="rx">████████████████</span> results. MRI imaging produces only static. Tissue samples extracted during Incident 9142-A dissolved within four hours of removal, leaving behind a residue that spectrographic analysis identified as <span class="rx">████████████████████████████████</span>. No further sampling attempts have been authorized.</p>
+
+  <p>SCP-9142's most dangerous characteristic is not any single anomalous ability. It is the fact that it does not appear to have any. Personnel who interact with SCP-9142 — including trained researchers with full knowledge of its file — consistently describe it as <em>normal</em>. It appears, in every sensory and behavioral respect, to be an ordinary small dog. This appearance is not passive. It is active, adaptive, and deliberate.</p>
+
+  <hr class="rule">
+
+  <div class="sec-head">Anomalous Properties</div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property I — Behavioral Mimicry (Sustained Deception)</span>
+      <span class="ability-tag tag-passive">Passive / Constant</span>
+    </div>
+    <div class="ability-body">
+      <p>SCP-9142 maintains a continuous, adaptive performance of companion animal behavior that is indistinguishable from genuine animal affect. This includes tail wagging, whining, soliciting affection, following personnel, and reacting to stimuli in ways consistent with a domesticated dog.</p>
+      <p>However, analysis reveals that each behavior is precisely calibrated to the emotional state of the nearest human subject rather than to any external stimulus. SCP-9142's tail wagging rate correlates directly with the subject's cortisol levels, not with positive interaction. Its whining increases in response to a subject's suppressed anxiety, not discomfort. It follows the person in the room with the highest heart rate.</p>
+      <p>The mimicry is functionally perfect. Experienced animal behaviorists exposed to SCP-9142 under blind conditions uniformly fail to identify anomalous behavior. The performance does not break. It has never broken. Across <span class="rx">███</span> hours of observation, SCP-9142 has never once dropped the act — not when alone, not when it believes it is unobserved, not in complete darkness. Researchers have noted that this last point is perhaps the most troubling aspect of its presentation. An animal performs for an audience. SCP-9142 performs for no one.</p>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property II — Positional Displacement</span>
+      <span class="ability-tag tag-unknown">Mechanism Unknown</span>
+    </div>
+    <div class="ability-body">
+      <p>SCP-9142 does not move in any way that is observable by human perception, standard motion sensors, or any recording equipment currently deployed. It occupies a position. Then it occupies a different position. The transition between these states has never been captured. Maximum displacement recorded in a single observation session: 14 meters, through two sealed doors rated at security level 4.</p>
+      <p>When questioned about this property, personnel who witnessed the displacement consistently report that they simply <em>didn't notice it move</em>. Not that it was fast. Not that they looked away. They describe the sensation as: the dog was there, and then it was here, and both facts feel equally natural. One researcher described it as "the way furniture works." You don't watch furniture move between rooms. You simply find it somewhere else.</p>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property III — Cognitohazardous Sustained Gaze</span>
+      <span class="ability-tag tag-cognitohazard">Cognitohazard — Active above 6 seconds</span>
+    </div>
+    <div class="ability-body">
+      <p>Sustained, uninterrupted eye contact with SCP-9142 initiates a progressive cognitohazardous effect. The effect is tiered by exposure duration:</p>
+      <table>
+        <tr><th>Duration</th><th>Effect</th></tr>
+        <tr><td>0 – 6 sec</td><td>No anomalous effect. Subject perceives a small dog looking at them.</td></tr>
+        <tr><td>6 – 30 sec</td><td>Subject becomes increasingly convinced that SCP-9142 is physically closer than it appears. Effect intensifies regardless of actual distance.</td></tr>
+        <tr><td>30 – 90 sec</td><td>Subject reports the persistent sensation that SCP-9142 is directly behind them — even while continuing to look directly at it. Subject begins to feel that the room has become smaller.</td></tr>
+        <tr><td>90 sec – 4 min</td><td><span class="rx">████████████████████████████████████████████████████████████</span>. Subject is non-responsive to verbal communication. Pupils fully dilated. Facial expression consistently described by observers as "calm."</td></tr>
+        <tr><td>Above 4 min</td><td>See Incident 9142-D. No controlled exposures have exceeded this threshold.</td></tr>
+      </table>
+      <p>The effect does not diminish with prior knowledge of its existence. Personnel who have read this file, understand its mechanism, and choose to test it anyway report identical progressive effects. Understanding the trick does not stop it working.</p>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property IV — Anomalous Vocalization</span>
+      <span class="ability-tag tag-cognitohazard">Cognitohazard — Proximity Based</span>
+    </div>
+    <div class="ability-body">
+      <p>Audio monitoring equipment within 3 meters of SCP-9142 intermittently captures whispered human speech on channels that SCP-9142's anatomy is incapable of producing. SCP-9142's jaw does not move. Its throat produces no vibration. There is no secondary sound source. The vocalizations are, by every measurable criterion, not occurring — and yet they are recorded.</p>
+      <p>The content of these vocalizations is contextually specific. Across <span class="rx">████</span> recorded instances, vocalization content has correlated with the unspoken thoughts of the nearest personnel in <span class="rx">██</span>% of cases. Several examples from the archive:</p>
+      <table>
+        <tr><th>Timestamp</th><th>Personnel Present</th><th>Captured Audio</th><th>Context Note</th></tr>
+        <tr><td>03:41:19</td><td>Researcher <span class="rx">████</span></td><td><em>"You don't have to go."</em></td><td>Researcher had been considering requesting a transfer earlier that day.</td></tr>
+        <tr><td>11:17:02</td><td>Agent <span class="rx">███████</span></td><td><em>"She already knows."</em></td><td>Agent's notes from the session make no mention of the vocalization. The agent did not appear to hear it.</td></tr>
+        <tr><td>22:08:55</td><td>No personnel in cell. Cell empty.</td><td><em>"Still here."</em></td><td>No explanation. Cell confirmed empty at time of recording.</td></tr>
+        <tr><td><span class="rx">██:██:██</span></td><td><span class="rx">████████████████</span></td><td><em>"Stay."</em></td><td>Most frequently recorded phrase. Logged in <span class="rx">██</span> distinct sessions across <span class="rx">██</span> months.</td></tr>
+      </table>
+      <p>The vocalizations are not perceived by personnel present in the cell in real time. They are only discovered upon audio review. One exception: subjects who have entered Night 7+ dream content (see Property VI) subsequently report hearing the vocalizations in real time, without equipment. Those subjects describe the voice as quiet, patient, and — notably — <em>familiar</em>. As though they have heard it before and simply hadn't been paying attention.</p>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property V — Fear Predation</span>
+      <span class="ability-tag tag-active">Active — Threat-Responsive</span>
+    </div>
+    <div class="ability-body">
+      <p>SCP-9142 exhibits a measurable behavioral preference for subjects displaying elevated cortisol, increased heart rate, or visible behavioral indicators of anxiety. It approaches these subjects more frequently, positions itself closer to them during rest periods, and maintains extended eye contact with them specifically.</p>
+      <p>During these interactions, SCP-9142's pupils dilate to occupy approximately 90% of the visible eye area. Concurrent thermal imaging reveals that its surface body temperature drops to match ambient room temperature precisely — a reading consistent with an inanimate object, not a living one.</p>
+      <p>Current working hypothesis: SCP-9142 does not feed on fear in the conventional sense. It feeds on the specific psychological state produced when a person is afraid of something and simultaneously convinced that they have no reason to be. The gap between the fear and the justification for the fear appears to be the operative mechanism. SCP-9142 works to maximize that gap. Its harmless appearance is not a weakness in its predation strategy. It is the strategy.</p>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property VI — Memetic Dream Infiltration</span>
+      <span class="ability-tag tag-cognitohazard">Cognitohazard — Cumulative Exposure</span>
+    </div>
+    <div class="ability-body">
+      <p>Personnel who have spent more than 20 cumulative minutes in SCP-9142's presence begin experiencing recurring, progressive dream events. Onset occurs within 48–72 hours of threshold exposure. Dream content follows a documented escalation profile:</p>
+      <table>
+        <tr><th>Night</th><th>Content</th><th>Classification</th></tr>
+        <tr><td>1–3</td><td>A locked door. Scratching from the other side. The subject is in the hallway. The sound is small and sounds like a dog.</td><td>Low — No intervention</td></tr>
+        <tr><td>4–6</td><td>The subject is on the other side of the door now. They are in a room they recognize as home. The scratching is from outside. It does not sound like a dog anymore.</td><td>Moderate — Monitor</td></tr>
+        <tr><td>7–10</td><td>There is no door. A hallway. A small shape at the far end. It is not moving. Each time the subject blinks, it is closer. The subject cannot stop blinking. The subject cannot run. The subject reports that the shape "looks right at them the whole time, like it's been waiting."</td><td>High — Rotate personnel</td></tr>
+        <tr><td>11–13</td><td>The subject is in SCP-9142-A (see Property VII). They can move freely and interact with the environment. SCP-9142 is not visible. The subject does not want to find it but wakes with the impression that it found them.</td><td>Critical — Immediate sequestration</td></tr>
+        <tr><td>14+</td><td><span class="rx">████████████████████████████████████████████████████████████████████████████████████████████████</span></td><td>Relocation threshold — See Addendum 9142-02</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property VII — SCP-9142-A ("The Hollow") — Spatial Annexation</span>
+      <span class="ability-tag tag-spatial">Extradimensional — Partially Mapped</span>
+    </div>
+    <div class="ability-body">
+
+      <div class="box box-dim">
+        <div class="box-label box-label-dim">SCP-9142-A Overview</div>
+        SCP-9142-A, designated "The Hollow," is an anomalous extradimensional space associated with SCP-9142. Its full extent is unknown. Its point of origin is unknown. Whether SCP-9142 created it, inhabits it, or simply uses it as a tool is unknown. What is known has been assembled from the accounts of three subjects who returned from it, and the partial radio transmission received on Day <span class="rx">██</span>.
+      </div>
+
+      <p><strong>Architecture.</strong> The Hollow is described consistently across all recovered subject accounts as a residential interior — specifically, a home. The layout varies per subject but is always described as recognizable: the subject's own home, or something close to it. Furniture is present and correctly placed. Lighting is present but sourceless. Windows exist. They show nothing — not darkness, but an absence of anything behind the glass.</p>
+
+      <p><strong>Sound.</strong> The environment is described as completely silent with one consistent exception: a distant, intermittent scratching. The sound is always coming from another room. It moves when the subject moves. It never gets closer or further regardless of the subject's actions. Subjects universally describe it as "following me from somewhere it can't follow."</p>
+
+      <p><strong>Duration.</strong> Time in SCP-9142-A does not appear to correspond to external time. Subject <span class="rx">████████</span>, who returned after what Foundation personnel estimated as 11 days, reported experiencing what felt like "several months, maybe more." She was unable to specify. Subject <span class="rx">███</span>, who returned after 4 hours external time, reported experiencing what felt like "a single night, but it lasted." Both accounts note that hunger and fatigue were not felt during the experience.</p>
+
+      <p><strong>SCP-9142's presence in SCP-9142-A.</strong> SCP-9142 is never directly encountered within The Hollow by subjects during waking incursions. It is, however, consistently sensed. Subjects report the persistent, unverifiable impression that SCP-9142 is in the next room — always the next room, regardless of how many rooms the subject has checked. Recovered subjects who attempted to methodically clear every room in SCP-9142-A report that the layout expanded to accommodate them: new rooms appeared behind doors that led to rooms that had already been checked. The house is not fixed. It is responsive.</p>
+
+      <p><strong>Exit conditions.</strong> Three subjects have returned from SCP-9142-A. None of them know how. All three describe the same exit experience: they stopped looking for the door. They sat down in whatever room they were in. They closed their eyes. When they opened them, they were back. One of the three added: <em>"I think it let me go. I think it was finished with something."</em></p>
+
+      <p><strong>Current status of non-returned personnel.</strong> Four Foundation personnel are classified as Relocated to SCP-9142-A. No recovery operation has been authorized, as no reliable method of controlled entry or exit has been established. Radio contact has been attempted on <span class="rx">██</span> occasions. One response was received:</p>
+
+      <div class="transcript">
+        <div class="dim-title" style="font-size:10px;letter-spacing:0.12em;color:#6a2a9a;margin-bottom:8px">TRANSMISSION LOG — SCP-9142-A · DAY <span class="rx">██</span> · SITE-17 ANTENNA ARRAY B</div>
+        <div class="t-row"><span class="t-ts">00:00:00</span><span class="t-note">[Carrier signal established. No source identified on any Foundation frequency.]</span></div>
+        <div class="t-row"><span class="t-ts">00:00:04</span><span class="t-content">— [Sound of a tail wagging. 2.3 seconds. Clean audio, no distortion.]</span></div>
+        <div class="t-row"><span class="t-ts">00:00:07</span><span class="t-content">— [Silence.]</span></div>
+        <div class="t-row"><span class="t-ts">00:00:11</span><span class="t-ominous">— "Still here."</span></div>
+        <div class="t-row"><span class="t-ts">00:00:14</span><span class="t-note">[Carrier signal lost. Source never identified.]</span></div>
+      </div>
+
+      <p>It is not confirmed whether the vocalization originated from one of the four Relocated personnel, from SCP-9142 itself, or from something else present in SCP-9142-A that Foundation personnel have not yet accounted for.</p>
+
+      <div class="box box-dim">
+        <div class="box-label box-label-dim">Researcher Note — Dr. <span class="rx">██████</span></div>
+        "We have been operating on the assumption that The Hollow is a trap — a place SCP-9142 puts people. I want to formally revise that framing. Based on recovered subject accounts, I believe The Hollow is a home. I believe it has always been a home. I believe SCP-9142 has been inviting people into it from the beginning, and that the distinction between 'trap' and 'invitation' may only matter to us."
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ability">
+    <div class="ability-head">
+      <span class="ability-name">Property VIII — Reality Coefficient Suppression</span>
+      <span class="ability-tag tag-unknown">Mechanism Unknown</span>
+    </div>
+    <div class="ability-body">
+      <p>Scranton Reality Anchors within 6 meters of SCP-9142 experience measurable baseline degradation. Type III units fail completely within 18 hours. Type IV units — currently deployed — show output degradation beginning at 72 hours. During degradation windows, localized reality fluctuations have been documented: <span class="rx">████████████████</span> appearing on ceilings, temporal loops of 6–9 seconds, and on one occasion a door present in MCIC-9142 that does not appear in any architectural plan and which, upon opening, revealed only a continuation of the cell interior behind it. The door was gone by the following day. It has not reappeared.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec-head">Incident Reports</div>
+
+  <div class="incident">
+    <div class="incident-head">
+      <span class="incident-id">Incident 9142-A — Initial Containment Failure</span>
+      <span class="incident-status">Closed · 2 Relocated · 1 Amnesticized · 1 Active</span>
+    </div>
+    <div class="incident-meta">
+      <span><span class="meta-k">Date: </span><span class="meta-v"><span class="rx">██/██/20██</span></span></span>
+      <span><span class="meta-k">Team: </span><span class="meta-v">Research Team Delta-7 (4 personnel)</span></span>
+    </div>
+    <div class="incident-body">
+      <p>During initial biological sampling, Dr. <span class="rx">████</span> verbally described SCP-9142 as "looking confused and scared." This constitutes a verbal affection reinforcement event. Within 4 hours, two team members reported onset of Night 1 dream content. Within 9 days, Dr. <span class="rx">████</span> and Junior Researcher <span class="rx">███████</span> were classified Relocated. Their quarters were found locked from the inside.</p>
+      <p>Both rooms showed identical anomalous trace evidence: paw impressions pressed into the concrete ceiling, oriented as though something had been standing on it and looking down at the beds. No other evidence of breach. No tool marks on locks. No signs of distress.</p>
+      <p>SCP-9142 was found in the hallway outside the research wing approximately 40 minutes after the disappearances were confirmed. Its tail was wagging. It had not, by any recorded measure, left its cell.</p>
+    </div>
+  </div>
+
+  <div class="incident">
+    <div class="incident-head">
+      <span class="incident-id">Incident 9142-C — The Ceiling Event</span>
+      <span class="incident-status">Closed · Agent recovered · Long-term observation active</span>
+    </div>
+    <div class="incident-meta">
+      <span><span class="meta-k">Date: </span><span class="meta-v"><span class="rx">██/██/20██</span></span></span>
+      <span><span class="meta-k">Personnel: </span><span class="meta-v">Agent <span class="rx">████████</span>, security rotation</span></span>
+    </div>
+    <div class="incident-body">
+      <p>Surveillance footage shows SCP-9142 ascending the cell wall at a 90-degree angle and walking across the ceiling at normal pace for 14 minutes. No equipment registered an anomaly. No motion sensors triggered. SCP-9142's footfall audio was present on chamber microphones — faint, regular, and inverted.</p>
+      <p>The on-duty agent stationed outside MCIC-9142 reported hearing the sound of small claws on a hard surface directly above them through the reinforced door. The agent did not open the door. The agent was later found to have written the words <span class="rx">████████ ████</span> in ink across the underside of their desk in a handwriting that did not match their own. They have no memory of doing so.</p>
+      <p>Anti-adhesion polymer was applied to all interior surfaces following this incident. SCP-9142 has not attempted ceiling locomotion since. The Foundation's current assessment of this behavioral change: unknown. The leading hypothesis: it no longer needs to.</p>
+    </div>
+  </div>
+
+  <div class="incident">
+    <div class="incident-head">
+      <span class="incident-id">Incident 9142-D — The 4-Minute Contact Event</span>
+      <span class="incident-status">Closed · Researcher Relocated · Case finalized</span>
+    </div>
+    <div class="incident-meta">
+      <span><span class="meta-k">Date: </span><span class="meta-v"><span class="rx">██/██/20██</span></span></span>
+      <span><span class="meta-k">Personnel: </span><span class="meta-v">Senior Researcher <span class="rx">██████████</span></span></span>
+    </div>
+    <div class="incident-body">
+      <p>Senior Researcher <span class="rx">██████████</span> entered MCIC-9142 under Code Black protocol to replace a degraded Type IV Scranton Anchor. Polarized anti-cognitohazard eyewear malfunctioned at 0:00:22 into the procedure. The researcher did not exit the cell.</p>
+      <p>Surveillance shows the researcher standing motionless for 4 minutes and 12 seconds, facing SCP-9142. SCP-9142 sat. It did not move. At the 4:12 mark, the researcher spoke aloud. Chamber microphones captured the audio. The researcher said: <em>"Oh. I see."</em></p>
+      <p>The researcher then walked to the secondary access hatch — sealed, requiring a two-person key protocol — and opened it. Analysis of footage from the exterior side confirms the hatch did not open. The researcher was not present on the exterior side. The researcher was not present in the cell. SCP-9142 remained where it was.</p>
+
+      <div class="transcript">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--ink3);margin-bottom:8px">CHAMBER-MIC-01 — Full audio log, Incident 9142-D</div>
+        <div class="t-row"><span class="t-ts">00:04:12</span><span class="t-content">"Oh. I see."</span></div>
+        <div class="t-row"><span class="t-ts">00:04:14</span><span class="t-note">[Sound of tail wagging — 2.1 seconds]</span></div>
+        <div class="t-row"><span class="t-ts">00:04:19</span><span class="t-note">[Silence]</span></div>
+        <div class="t-row"><span class="t-ts">00:04:31</span><span class="t-ominous">"Stay."</span><span style="margin-left:8px;font-family:var(--mono);font-size:10px;color:var(--ink3)">[SCP-9142 anomalous vocalization channel — not the researcher]</span></div>
+        <div class="t-row"><span class="t-ts">00:04:33</span><span class="t-note">[Secondary access hatch mechanism sound — 0.6 seconds. Hatch confirmed sealed on exterior review.]</span></div>
+        <div class="t-row"><span class="t-ts">00:04:34</span><span class="t-note">[Silence. Cell occupied by SCP-9142 only.]</span></div>
+      </div>
+
+      <p>No recovery attempt has been authorized. The Researcher's personal effects were removed from on-site housing. SCP-9142 did not react to their removal. Its tail was wagging at a slightly elevated rate for approximately <span class="rx">██</span> hours following the event. It then returned to baseline.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div class="sec-head">Addenda</div>
+
+  <div class="addendum">
+    <div class="add-id">Addendum 9142-01 — Unresolved Anomalous Observations</div>
+    <ul>
+      <li>SCP-9142 has never been observed to sleep. Across <span class="rx">████</span> hours of continuous surveillance, its eyes have remained open at all times. Its eyes do not blink at a normal rate. Researchers have disagreed on how often they blink at all.</li>
+      <li>When cell lighting fails, SCP-9142's eyes provide the only illumination present in MCIC-9142. This illumination has been confirmed to cast shadows.</li>
+      <li>On four separate occasions, the phrase <em>STAY</em> has been found scratched into the inner surface of the cell's reinforced door. Not the outer surface. The inner surface. At a height of 1.4m. SCP-9142's forelimbs do not reach 1.4m.</li>
+      <li>SCP-9142's tail has wagged at elevated rate for a documented average of <span class="rx">██</span> hours following each Relocation event. It then returns to baseline with no intermediate reduction — instantly, not gradually.</li>
+      <li>Personnel assigned to SCP-9142 monitoring over periods exceeding six months have reported, independently and without cross-contamination, that they have begun to miss it when off-shift. This is not considered anomalous by current Foundation classification standards. Several researchers have petitioned for this to be reconsidered.</li>
+    </ul>
+  </div>
+
+  <div class="addendum">
+    <div class="add-id">Addendum 9142-02 — Note on Subject Relocation vs. Retrieval</div>
+    <p>Current Foundation protocol classifies any personnel relocated to SCP-9142-A as permanently lost absent a retrieval method. Three subjects have returned from SCP-9142-A without Foundation intervention, which confirms that exit is possible. Retrieval operations have not been authorized because no controlled entry method exists, and because the three returned subjects — while physically intact — all required extended psychological care and were subsequently unable to resume Foundation work. Two of the three have since left the Foundation entirely. When asked about SCP-9142, one stated: <em>"I don't think it wanted to hurt anyone. I think it was just lonely. I think that makes it worse."</em></p>
+    <p>This statement has been flagged as potential lingering cognitohazardous effect. It has not been ruled out as accurate.</p>
+  </div>
+
+  <div class="addendum">
+    <div class="add-id">Addendum 9142-03 — Statement, Site Director <span class="rx">████</span></div>
+    <div class="pull-quote">
+      "We have contained it reliably for <span class="rx">██</span> months. In that time it has never tried to leave. I want to be very clear about what I mean when I say that. I don't mean our containment is working. I mean it has had every opportunity to leave and it has chosen not to. Something that can displace through sealed doors, walk on ceilings, move people into a pocket dimension without triggering a single sensor — and it stays in that room. Every day. Waiting. We are not keeping it. It is staying. Those are not the same thing, and I need the O5 Council to understand that before we have another 9142-D."
+      <span class="pull-attr">— Site Director <span class="rx">████</span>, internal memo, <span class="rx">██/██/20██</span></span>
+    </div>
+  </div>
+
+  <div class="addendum">
+    <div class="add-id">Addendum 9142-04 — Note from O5-<span class="rx">██</span></div>
+    <div class="pull-quote" style="font-size:14px">
+      Do not pet it.<br>
+      Do not name it.<br>
+      Do not look at it for more than five seconds.<br>
+      Do not tell it you are sorry for keeping it here.<br><br>
+      It is counting on at least one of those.
+      <span class="pull-attr">— O5-<span class="rx">██</span></span>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <span class="footer-text">SCP Foundation · Site-17 · Document 9142-Theta-4</span>
+  <span class="footer-text">Secure. Contain. Protect.</span>
+</div>
+
+</div>
